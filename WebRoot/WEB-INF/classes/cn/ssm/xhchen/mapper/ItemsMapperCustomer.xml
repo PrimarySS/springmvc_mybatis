@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ItemsMapper的拓展mapper -->
+<mapper namespace="cn.ssm.xhchen.mapper.ItemsMapperCustomer">
+
+	<!-- sql片段 -->
+	<sql id="where_query_Items">
+		<!-- 使用动态sql，满足条件进行sql拼接 -->
+		<!-- 商品信息通过 ItemsQueryVo包装类中的ItemsCustomer传递 -->
+		<if test="itemsCustomer != null">
+			<if test="itemsCustomer.items_name != null and itemsCustomer.items_name != ''">
+				items_name like '%${itemsCustomer.items_name}%';
+			</if>
+		</if>
+	</sql>
+
+	<!-- 商品列表查询 parameterType:商品信息包装类 resultType:商品信息po拓展类 -->
+	<select id="findItemsList" parameterType="cn.ssm.xhchen.po.ItemsQueryVo" resultType="cn.ssm.xhchen.po.ItemsCustomer">
+		select * from items
+		<where>
+			<include refid="where_query_Items"></include>
+		</where>
+	</select>
+
+</mapper>
